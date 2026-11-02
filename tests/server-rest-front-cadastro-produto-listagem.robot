@@ -2,6 +2,8 @@
 Documentation    Cadastro de usuario para logar, cadastro de produto e validacao na listagem - Serve Rest Front
 Resource         ../resource/server-rest-front_EXERCICIO.resource
 Test Teardown    Run Keyword And Ignore Error    Close Browser
+Suite Teardown    Close Browser    ALL
+
 
 *** Test Cases ***
 Cenario 02 - Cadastrar novo usuario para logar, cadastrar produto e conferir na listagem

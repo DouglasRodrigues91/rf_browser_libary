@@ -2,6 +2,8 @@
 Documentation    Cadastro de novo usuario e validacao na listagem - Serve Rest Front
 Resource         ../resource/server-rest-front_EXERCICIO.resource
 Test Teardown    Run Keyword And Ignore Error    Close Browser
+Suite Teardown    Close Browser    ALL
+
 
 *** Test Cases ***
 Cenario 01 - Cadastrar novo usuario e conferir na listagem

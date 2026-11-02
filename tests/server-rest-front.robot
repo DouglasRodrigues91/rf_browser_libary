@@ -1,7 +1,8 @@
 *** Settings ***
-Resource    ../resource/server-rest-front.resource
-Test Teardown    Finalizar Evidencias
-Suite Setup    Cadastrar Usuario e Logar
+Resource          ../resource/server-rest-front.resource
+Test Teardown     Finalizar Evidencias
+Suite Setup       Cadastrar Usuario e Logar
+Suite Teardown    Close Browser    ALL
 
 *** Test Cases ***
 Login com sucesso Serve Rest Front
