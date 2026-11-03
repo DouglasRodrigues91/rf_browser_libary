@@ -1,6 +1,7 @@
 name: Run WEB Tests
 run-name: Manual - web Tests Run
-on: workflow_dispatch:
+on: 
+  workflow_dispatch:
     inputs:
       tag:
         type: string
