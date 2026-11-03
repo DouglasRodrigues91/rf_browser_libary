@@ -1,0 +1,67 @@
+name: Run WEB Tests
+run-name: Manual - web Tests Run
+on: 
+  workflow_dispatch:
+    inputs:
+      tag:
+        type: string
+        description: Qual é a TAG a ser executada?
+        required: true
+
+jobs:
+  web-test:
+    runs-on: ubuntu-24.04
+    permissions: write-all
+    strategy:
+      matrix:
+        browser: [chromium, firefox, webkit]    
+      fail-fast: false  
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v5
+
+      - name: install Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: 3.11
+
+      - name: install node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: install requirements
+        run: |
+          python -m pip install --upgrade pip
+          pip install -U -r requirements.txt
+          sudo npm install @playwright/test
+          sudo npx playwright install-deps
+          rfbrowser init
+
+      - name: Run RF WEB Tests
+        run: |
+          robot -d ./results -v HEADLESS:True -v BROWSER:${{ matrix.browser }} -i ${{ inputs.tag }} tests
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: results-${{ matrix.browser }}
+          path: ./results
+          if-no-files-found: ignore
+          retention-days: 2
+
+      - name: Download Test Results
+        if: always()
+        uses: actions/download-artifact@v7
+        with:
+          name: results-${{ matrix.browser }}
+          path: results-${{ matrix.browser }}
+
+      - name: Send Report
+        if: always()
+        uses: joonvena/robotframework-reporter-action@v2.5
+        with:
+          report_path: results-${{ matrix.browser }}
+          gh_access_token: ${{ secrets.GITHUB_TOKEN }}
+          show_passed_tests: false
