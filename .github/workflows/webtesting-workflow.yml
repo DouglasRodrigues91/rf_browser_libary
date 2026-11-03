@@ -38,4 +38,5 @@ jobs:
           name: results-Chromium
           path: ./results
           if-no-files-found: ignore
+          retention-days: 2
 
