@@ -1,6 +1,11 @@
 name: Run WEB Tests
-run-name: On Push - web Tests Run
-on: [push]
+run-name: Manual - web Tests Run
+on: workflow_dispatch:
+    inputs:
+      tag:
+        type: string
+        description: Qual é a TAG a ser executada?
+        required: true
 
 jobs:
   web-test:
@@ -34,7 +39,7 @@ jobs:
 
       - name: Run RF WEB Tests
         run: |
-          robot -d ./results -v HEADLESS:True -v BROWSER:${{ matrix.browser }} tests
+          robot -d ./results -v HEADLESS:True -v BROWSER:${{ matrix.browser }} -i ${{ inputs.tag }} tests
 
       - name: Upload Test Results
         if: always()
