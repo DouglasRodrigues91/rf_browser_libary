@@ -31,3 +31,11 @@ jobs:
         run: |
           robot -d ./results -v HEADLESS:True -v BROWSER:chromium tests
 
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: results-Chromium
+          path: ./results
+          if-no-files-found: ignore
+
