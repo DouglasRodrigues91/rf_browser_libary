@@ -6,7 +6,7 @@ jobs:
   web-test:
     runs-on: ubuntu-24.04
     permissions: write-all
-    Strategy:
+    strategy:
       matrix:
         browser: [chromium, firefox, webkit]    
       fail-fast: false  
