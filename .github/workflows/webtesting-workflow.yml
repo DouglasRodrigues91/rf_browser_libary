@@ -46,6 +46,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: results-Chromium
+          path: results-Chromium
 
       - name: Send Report
         if: always()
