@@ -101,9 +101,7 @@ Fazer login com usuario cadastrado
     Fill Text    css=input[data-testid='senha']    123456
     Wait For Elements State    css=button[data-testid='entrar']    enabled    timeout=10s
     Click    css=button[data-testid='entrar']
-    Sleep    3s
-    ${title}    Get Title
-    Log    ${title}
+    Wait For Elements State    h1:has-text("Bem Vindo")    visible    timeout=20s
     ${texto_home}    Get Text    h1
     Log    ${texto_home}
     Should Contain    ${texto_home}    Bem Vindo
