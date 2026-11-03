@@ -4,21 +4,25 @@ on: [push]
 
 jobs:
   web-test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions: write-all
+    Strategy:
+      matrix:
+        browser: [chromium, firefox, webkit]    
+      fail-fast: false  
     steps:
       - name: checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - name: install Python 3.11
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v6
         with:
           python-version: 3.11
 
       - name: install node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 22
 
       - name: install requirements
         run: |
@@ -30,28 +34,28 @@ jobs:
 
       - name: Run RF WEB Tests
         run: |
-          robot -d ./results -v HEADLESS:True -v BROWSER:chromium tests
+          robot -d ./results -v HEADLESS:True -v BROWSER:${{ matrix.browser }} tests
 
       - name: Upload Test Results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
-          name: results-Chromium
+          name: results-${{ matrix.browser }}
           path: ./results
           if-no-files-found: ignore
           retention-days: 2
 
       - name: Download Test Results
         if: always()
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
-          name: results-Chromium
-          path: results-Chromium
+          name: results-${{ matrix.browser }}
+          path: results-${{ matrix.browser }}
 
       - name: Send Report
         if: always()
         uses: joonvena/robotframework-reporter-action@v2.5
         with:
-          report_path: results-Chromium
+          report_path: results-${{ matrix.browser }}
           gh_access_token: ${{ secrets.GITHUB_TOKEN }}
           show_passed_tests: false
