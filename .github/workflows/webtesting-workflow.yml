@@ -29,5 +29,5 @@ jobs:
 
       - name: Run RF WEB Tests
         run: |
-          robot -d ./results -v HEADLESS:True -v BROWSER:chromium
+          robot -d ./results -v HEADLESS:True -v BROWSER:chromium tests
 
